@@ -1,0 +1,27 @@
+<!-- src/app/auth/register/register.component.html -->
+<div class="register-container">
+    <h2>Inscription</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <label for="username">Nom d'utilisateur :</label>
+      <input id="username" formControlName="username" type="text" required>
+      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+        Le nom d'utilisateur est requis.
+      </div>
+  
+      <label for="email">Email :</label>
+      <input id="email" formControlName="email" type="email" required>
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        Un email valide est requis.
+      </div>
+  
+      <label for="password">Mot de passe :</label>
+      <input id="password" formControlName="password" type="password" required>
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        Le mot de passe doit contenir au moins 6 caractères.
+      </div>
+  
+      <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
+    </form>
+    <div *ngIf="errorMessage">{{ errorMessage }}</div>
+  </div>
+  

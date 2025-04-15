@@ -1,0 +1,136 @@
+<div class="project-detail">
+  <h2>Détail du Projet</h2>
+  <div *ngIf="project">
+    <p><strong>Nom:</strong> {{ project.name }}</p>
+    <p><strong>Description:</strong> {{ project.description }}</p>
+    <p><strong>Date de début:</strong> {{ project.startDate }}</p>
+  </div>
+
+  <!-- Section Liste des Membres -->
+  <div class="members-section">
+    <h3>Liste des Membres</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom d'utilisateur</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th *ngIf="(currentUserRole === 'ADMIN')">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of members">
+          <td>{{ member.user.username }}</td>
+          <td>{{ member.user.email }}</td>
+          <td>
+            <!-- Si la ligne est en mode édition pour ce membre -->
+            <ng-container *ngIf="editingMemberId === member.user.id; else displayRole">
+              <select [(ngModel)]="selectedRole">
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
+            </ng-container>
+            <ng-template #displayRole>
+              {{ member.role.name }}
+            </ng-template>
+          </td>
+          <td *ngIf="currentUserRole === 'ADMIN'">
+            <ng-container *ngIf="editingMemberId === member.user.id; else editButton">
+              <button (click)="confirmRoleUpdate(member)">Valider</button>
+              <button (click)="cancelRoleUpdate()">Annuler</button>
+            </ng-container>
+            <ng-template #editButton>
+              <button (click)="openRoleEditModal(member)">Modifier le rôle</button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Affichage du composant d'invitation uniquement si l'utilisateur est ADMIN -->
+  <div *ngIf="(currentUserRole === 'ADMIN')">
+    <app-invitation [projectId]="project.id" [inviterId]="currentUserId" (memberAdded)="loadMembers()"></app-invitation>
+  </div>
+
+<!-- Section Tâches -->
+<div class="tasks-section">
+  <h3>Liste des Tâches</h3>
+  <!-- Bloc de filtrage par statut -->
+  <div *ngIf="tasks.length > 0" class="filter-section">
+    <label for="statusFilter"><strong>Filtrer par statut:</strong></label>
+    <select id="statusFilter" [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange()">
+      <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+    </select>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Date d'échéance</th>
+        <th>Priorité</th>
+        <th>Statut</th>
+        <th>Assignée à</th>
+        <th *ngIf="currentUserRole !== 'OBSERVER'">Actions</th>
+        <th *ngIf="currentUserRole !== 'OBSERVER'">Assigner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of filteredTasks">
+        <td>
+          <a [routerLink]="['/tasks', task.id]">{{ task.name }}</a>
+        </td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.dueDate }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.assignedTo?.username || 'Non assignée' }}</td>
+        <td *ngIf="currentUserRole !== 'OBSERVER'">
+          <button (click)="editTask(task)">Modifier</button>
+        </td>
+        <td *ngIf="currentUserRole !== 'OBSERVER'">
+          <select [(ngModel)]="selectedAssignees[task.id]">
+            <option [ngValue]="null">-- Choisir un membre --</option>
+            <option *ngFor="let member of members" [ngValue]="member.user.id">
+              {{ member.user.username }}
+            </option>
+          </select>
+          <button (click)="assignTask(task)">Valider</button>
+          <button (click)="cancelAssignment(task.id)">Annuler</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <!-- Formulaire toujours visible pour la création/édition de tâche -->
+  <div class="task-form-container" *ngIf="currentUserRole !== 'OBSERVER'">
+    <h3>{{ selectedTask ? 'Modifier la Tâche' : 'Ajouter une Tâche' }}</h3>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Nom :</label>
+        <input id="name" formControlName="name" type="text">
+      </div>
+      <div class="form-group">
+        <label for="description">Description :</label>
+        <textarea id="description" formControlName="description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="dueDate">Date d'échéance :</label>
+        <input id="dueDate" formControlName="dueDate" type="date">
+      </div>
+      <div class="form-group">
+        <label for="priority">Priorité :</label>
+        <input id="priority" formControlName="priority" type="number" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="status">Statut :</label>
+        <input id="status" formControlName="status" type="text">
+      </div>
+      <div class="form-actions">
+        <button type="submit" [disabled]="taskForm.invalid">{{ selectedTask ? 'Mettre à jour' : 'Ajouter' }}</button>
+        <button type="button" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>

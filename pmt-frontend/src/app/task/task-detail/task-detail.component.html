@@ -1,0 +1,32 @@
+<div class="task-detail" *ngIf="task">
+  <h2>Détail de la Tâche</h2>
+  <p><strong>Nom :</strong> {{ task.name }}</p>
+  <p><strong>Description :</strong> {{ task.description }}</p>
+  <p><strong>Date d'échéance :</strong> {{ task.dueDate }}</p>
+  <p><strong>Priorité :</strong> {{ task.priority }}</p>
+  <p><strong>Statut :</strong> {{ task.status }}</p>
+  <div *ngIf="task.assignedTo">
+    <p><strong>Assignée à :</strong> {{ task.assignedTo.username }}</p>
+  </div>
+  <button (click)="goBack()">Retour</button>
+
+  <div *ngIf="history && history.length > 0" class="history-section">
+    <h3>Historique des modifications</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Utilisateur</th>
+          <th>Description du changement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of history">
+          <td>{{ record.changeDate }}</td>
+          <td>{{ record.user.username || 'Système' }}</td>
+          <td>{{ record.changeDescription }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

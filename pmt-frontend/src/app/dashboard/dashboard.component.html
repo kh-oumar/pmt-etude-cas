@@ -1,0 +1,23 @@
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    
+    <div class="actions">
+      <button [routerLink]="['/projects/create']">Créer un nouveau projet</button>
+    </div>
+    
+    <div class="project-list">
+      <h2>Liste des projets</h2>
+      <div *ngIf="projects && projects.length > 0; else noProjects">
+        <div class="project-card" *ngFor="let project of projects">
+          <h3>{{ project.name }}</h3>
+          <p>{{ project.description }}</p>
+          <p><strong>Date de début :</strong> {{ project.startDate }}</p>
+          <a [routerLink]="['/projects', project.id]">Voir le détail</a>
+        </div>
+      </div>
+      <ng-template #noProjects>
+        <p>Aucun projet trouvé.</p>
+      </ng-template>
+    </div>
+  </div>
+  
