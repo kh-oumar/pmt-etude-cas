@@ -14,16 +14,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug directory structure (backend)
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing all files recursively:"
+          ls -laR
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
+      # Exécute Maven depuis le dossier pmt-backend
       - name: Build and run tests for backend
         working-directory: pmt-backend
         run: mvn clean package
 
+      # Construire l'image Docker en utilisant le dossier pmt-backend comme contexte
       - name: Build backend Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projet-backend:latest -f pmt-backend/Dockerfile pmt-backend
 
@@ -43,15 +51,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug directory structure (frontend)
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing all files recursively:"
+          ls -laR
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
 
-      - name: List contents of pmt-frontend (Debug)
-        working-directory: pmt-frontend
-        run: ls -la
-
+      # Install et test dans le dossier pmt-frontend
       - name: Install dependencies and run frontend tests
         working-directory: pmt-frontend
         run: |
@@ -62,6 +73,7 @@ jobs:
         working-directory: pmt-frontend
         run: npm run build -- --project pmt-frontend --configuration production
 
+      # Construire l'image Docker pour le frontend en utilisant pmt-frontend comme contexte
       - name: Build frontend Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projet-frontend:latest -f pmt-frontend/Dockerfile pmt-frontend
 
