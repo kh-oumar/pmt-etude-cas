@@ -1,0 +1,11 @@
+com\codesolutions\pmt_backend\testRepository\TaskRepositoryTest.class
+com\codesolutions\pmt_backend\testRepository\InvitationRepositoryTest.class
+com\codesolutions\pmt_backend\testRepository\RoleRepositoryTest.class
+com\codesolutions\pmt_backend\PmtBackendApplicationTests.class
+com\codesolutions\pmt_backend\testRepository\ProjectMemberRepositoryTest.class
+com\codesolutions\pmt_backend\testRepository\TaskHistoryRepositoryTest.class
+com\codesolutions\pmt_backend\testController\ProjectControllerTest.class
+com\codesolutions\pmt_backend\testController\InvitationControllerTest.class
+com\codesolutions\pmt_backend\testController\AuthControllerTest.class
+com\codesolutions\pmt_backend\testController\TaskControllerTest.class
+com\codesolutions\pmt_backend\testRepository\ProjectRepositoryTest.class
