@@ -208,15 +208,6 @@ jobs:
 
       - name: Build Docker Image for Backend
         run: docker build -t yourusername/pmt-backend:latest -f pmt-backend/Dockerfile .
-        # Pour pousser l'image sur Docker Hub, ajoutez une étape d'authentification et de push ici.
-        # ex:
-        # - name: Log in to Docker Hub
-        #   uses: docker/login-action@v2
-        #   with:
-        #     username: ${{ secrets.DOCKER_USERNAME }}
-        #     password: ${{ secrets.DOCKER_PASSWORD }}
-        # - name: Push Docker Image
-        #   run: docker push yourusername/pmt-backend:latest
 
   build-and-test-frontend:
     runs-on: ubuntu-latest
@@ -236,7 +227,6 @@ jobs:
         run: npm run build -- --configuration production
       - name: Build Docker Image for Frontend
         run: docker build -t yourusername/pmt-frontend:latest -f pmt-frontend/Dockerfile .
-        # Idem, ajoutez ici l'authentification et le push sur Docker Hub si nécessaire.
 ```
 
 ## Structure du Projet
