@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BootStrapData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.config</a> &gt; <span class="el_source">BootStrapData.java</span></div><h1>BootStrapData.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.config;
+
+import com.codesolutions.pmt_backend.entity.Role;
+import com.codesolutions.pmt_backend.repository.RoleRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BootStrapData implements CommandLineRunner {
+
+    private final RoleRepository roleRepository;
+
+<span class="fc" id="L13">    public BootStrapData(RoleRepository roleRepository) {</span>
+<span class="fc" id="L14">        this.roleRepository = roleRepository;</span>
+<span class="fc" id="L15">    }</span>
+
+    @Override
+    public void run(String... args) {
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (roleRepository.findByName(&quot;ADMIN&quot;).isEmpty()) {</span>
+<span class="fc" id="L20">            roleRepository.save(new Role(&quot;ADMIN&quot;));</span>
+        }
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (roleRepository.findByName(&quot;MEMBER&quot;).isEmpty()) {</span>
+<span class="fc" id="L23">            roleRepository.save(new Role(&quot;MEMBER&quot;));</span>
+        }
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (roleRepository.findByName(&quot;OBSERVER&quot;).isEmpty()) {</span>
+<span class="fc" id="L26">            roleRepository.save(new Role(&quot;OBSERVER&quot;));</span>
+        }
+<span class="fc" id="L28">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

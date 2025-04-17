@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.entity</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+<span class="fc" id="L24">    private LocalDateTime createdAt = LocalDateTime.now();</span>
+
+<span class="fc" id="L26">    public User() {</span>
+<span class="fc" id="L27">    }</span>
+
+<span class="fc" id="L29">    public User(String username, String email, String password) {</span>
+<span class="fc" id="L30">        this.username = username;</span>
+<span class="fc" id="L31">        this.email = email;</span>
+<span class="fc" id="L32">        this.password = password;</span>
+<span class="fc" id="L33">    }</span>
+
+    public Long getId() {
+<span class="fc" id="L36">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L40">        this.id = id;</span>
+<span class="fc" id="L41">    }</span>
+
+    public String getUsername() {
+<span class="fc" id="L44">        return username;</span>
+    }
+
+    public void setUsername(String username) {
+<span class="fc" id="L48">        this.username = username;</span>
+<span class="fc" id="L49">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L52">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L56">        this.email = email;</span>
+<span class="fc" id="L57">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L60">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="fc" id="L64">        this.password = password;</span>
+<span class="fc" id="L65">    }</span>
+
+    public LocalDateTime getCreatedAt() {
+<span class="fc" id="L68">        return createdAt;</span>
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+<span class="fc" id="L72">        this.createdAt = createdAt;</span>
+<span class="fc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

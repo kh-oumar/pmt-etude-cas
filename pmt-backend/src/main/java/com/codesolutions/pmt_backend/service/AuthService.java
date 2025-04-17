@@ -15,12 +15,10 @@ public class AuthService {
     }
 
     public User register(User user) {
-        // Ici tu peux ajouter la logique de validation et de hashage du mot de passe
         return userRepository.save(user);
     }
 
     public Optional<User> login(String email, String password) {
-        // Ici, implémente la logique de vérification (par exemple, comparer le mot de passe hashé)
         return userRepository.findByEmail(email);
     }
 }

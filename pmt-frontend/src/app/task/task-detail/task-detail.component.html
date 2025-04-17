@@ -23,7 +23,7 @@
       <tbody>
         <tr *ngFor="let record of history">
           <td>{{ record.changeDate }}</td>
-          <td>{{ record.user.username || 'Système' }}</td>
+          <td>{{ record.user?.username ?? 'Système' }}</td>
           <td>{{ record.changeDescription }}</td>
         </tr>
       </tbody>

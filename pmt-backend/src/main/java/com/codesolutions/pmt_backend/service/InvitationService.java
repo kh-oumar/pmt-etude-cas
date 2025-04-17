@@ -61,8 +61,6 @@ public class InvitationService {
         Invitation invitation = new Invitation(project, email, token, inviter, "en attente");
         Invitation savedInvitation = invitationRepository.save(invitation);
 
-        // Ici, vous pouvez ajouter la logique pour envoyer l'e-mail d'invitation avec le token.
-
         return savedInvitation;
     }
 

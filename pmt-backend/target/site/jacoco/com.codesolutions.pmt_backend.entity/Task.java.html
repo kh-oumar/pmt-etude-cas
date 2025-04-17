@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.entity</a> &gt; <span class="el_source">Task.java</span></div><h1>Task.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = &quot;task&quot;)
+public class Task {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // Chaque tâche appartient à un projet
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;project_id&quot;, nullable = false)
+    @JsonIgnoreProperties({&quot;hibernateLazyInitializer&quot;, &quot;handler&quot;})
+    private Project project;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(length = 500)
+    private String description;
+
+    private LocalDate dueDate;
+
+    private Integer priority;
+
+    @Column(length = 20)
+    private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;assigned_to&quot;)
+    @JsonIgnoreProperties({&quot;hibernateLazyInitializer&quot;, &quot;handler&quot;})
+    private User assignedTo;
+
+<span class="fc" id="L39">    public Task() {</span>
+<span class="fc" id="L40">    }</span>
+
+    public Task(Project project, String name, String description, LocalDate dueDate,
+<span class="fc" id="L43">                Integer priority, String status, User assignedTo) {</span>
+<span class="fc" id="L44">        this.project = project;</span>
+<span class="fc" id="L45">        this.name = name;</span>
+<span class="fc" id="L46">        this.description = description;</span>
+<span class="fc" id="L47">        this.dueDate = dueDate;</span>
+<span class="fc" id="L48">        this.priority = priority;</span>
+<span class="fc" id="L49">        this.status = status;</span>
+<span class="fc" id="L50">        this.assignedTo = assignedTo;</span>
+<span class="fc" id="L51">    }</span>
+
+    public Long getId() {
+<span class="fc" id="L54">        return id;</span>
+    }
+    public void setId(Long id) {
+<span class="fc" id="L57">        this.id = id;</span>
+<span class="fc" id="L58">    }</span>
+    public Project getProject() {
+<span class="fc" id="L60">        return project;</span>
+    }
+    public void setProject(Project project) {
+<span class="fc" id="L63">        this.project = project;</span>
+<span class="fc" id="L64">    }</span>
+    public String getName() {
+<span class="fc" id="L66">        return name;</span>
+    }
+    public void setName(String name) {
+<span class="fc" id="L69">        this.name = name;</span>
+<span class="fc" id="L70">    }</span>
+    public String getDescription() {
+<span class="fc" id="L72">        return description;</span>
+    }
+    public void setDescription(String description) {
+<span class="fc" id="L75">        this.description = description;</span>
+<span class="fc" id="L76">    }</span>
+    public LocalDate getDueDate() {
+<span class="fc" id="L78">        return dueDate;</span>
+    }
+    public void setDueDate(LocalDate dueDate) {
+<span class="fc" id="L81">        this.dueDate = dueDate;</span>
+<span class="fc" id="L82">    }</span>
+    public Integer getPriority() {
+<span class="fc" id="L84">        return priority;</span>
+    }
+    public void setPriority(Integer priority) {
+<span class="fc" id="L87">        this.priority = priority;</span>
+<span class="fc" id="L88">    }</span>
+    public String getStatus() {
+<span class="fc" id="L90">        return status;</span>
+    }
+    public void setStatus(String status) {
+<span class="fc" id="L93">        this.status = status;</span>
+<span class="fc" id="L94">    }</span>
+    public User getAssignedTo() {
+<span class="fc" id="L96">        return assignedTo;</span>
+    }
+    public void setAssignedTo(User assignedTo) {
+<span class="fc" id="L99">        this.assignedTo = assignedTo;</span>
+<span class="fc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -2,6 +2,7 @@ C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_ba
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testController\AuthControllerTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testController\InvitationControllerTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testController\ProjectControllerTest.java
+C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testController\ProjectMemberControllerTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testController\TaskControllerTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testRepository\InvitationRepositoryTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testRepository\ProjectMemberRepositoryTest.java
@@ -9,3 +10,8 @@ C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_ba
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testRepository\RoleRepositoryTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testRepository\TaskHistoryRepositoryTest.java
 C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testRepository\TaskRepositoryTest.java
+C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testService\AuthServiceTest.java
+C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testService\InvitationServiceTest.java
+C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testService\NotificationServiceTest.java
+C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testService\ProjectServiceTest.java
+C:\Users\33751\Desktop\projet\pmt-backend\src\test\java\com\codesolutions\pmt_backend\testService\TaskServiceTest.java

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InvitationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.controller</a> &gt; <span class="el_source">InvitationController.java</span></div><h1>InvitationController.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.controller;
+
+import com.codesolutions.pmt_backend.entity.Invitation;
+import com.codesolutions.pmt_backend.service.InvitationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;/api/invitations&quot;)
+public class InvitationController {
+
+    private final InvitationService invitationService;
+
+<span class="fc" id="L15">    public InvitationController(InvitationService invitationService) {</span>
+<span class="fc" id="L16">        this.invitationService = invitationService;</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Endpoint pour inviter un membre à un projet.
+     * Exemple d'appel : POST /api/invitations?projectId=1&amp;inviterId=2 avec body { &quot;email&quot;: &quot;invite@example.com&quot; }
+     */
+    @PostMapping
+    public ResponseEntity&lt;Invitation&gt; inviteMember(@RequestParam Long projectId,
+                                                   @RequestParam Long inviterId,
+                                                   @RequestBody Invitation invitationRequest) {
+<span class="fc" id="L27">        Invitation invitation = invitationService.inviteMember(projectId, invitationRequest.getEmail(), inviterId);</span>
+<span class="fc" id="L28">        return ResponseEntity.status(HttpStatus.CREATED).body(invitation);</span>
+    }
+
+    /**
+     * Endpoint pour accepter une invitation par token.
+     */
+    @PostMapping(&quot;/accept&quot;)
+    public ResponseEntity&lt;Invitation&gt; acceptInvitation(@RequestParam String token) {
+<span class="nc" id="L36">        Invitation invitation = invitationService.acceptInvitation(token);</span>
+<span class="nc" id="L37">        return ResponseEntity.ok(invitation);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

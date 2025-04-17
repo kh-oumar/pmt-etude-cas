@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.controller</a> &gt; <span class="el_source">TaskController.java</span></div><h1>TaskController.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.controller;
+
+import com.codesolutions.pmt_backend.entity.Task;
+import com.codesolutions.pmt_backend.entity.TaskHistory;
+import com.codesolutions.pmt_backend.service.TaskService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/tasks&quot;)
+public class TaskController {
+
+    private final TaskService taskService;
+
+<span class="fc" id="L17">    public TaskController(TaskService taskService) {</span>
+<span class="fc" id="L18">        this.taskService = taskService;</span>
+<span class="fc" id="L19">    }</span>
+
+    /**
+     * Endpoint pour créer une nouvelle tâche.
+     */
+    @PostMapping
+    public ResponseEntity&lt;Task&gt; createTask(@RequestBody Task task) {
+<span class="fc" id="L26">        Task createdTask = taskService.createTask(task);</span>
+<span class="fc" id="L27">        return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);</span>
+    }
+
+    /**
+     * Endpoint pour mettre à jour une tâche existante.
+     */
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Task&gt; updateTask(@PathVariable(&quot;id&quot;) Long taskId, @RequestBody Task task) {
+        // On s'assure que l'objet Task a bien son id correspondant
+<span class="fc" id="L36">        task.setId(taskId);</span>
+<span class="fc" id="L37">        Task updatedTask = taskService.updateTask(task);</span>
+<span class="fc" id="L38">        return ResponseEntity.ok(updatedTask);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Task&gt; getTaskById(@PathVariable(&quot;id&quot;) Long taskId) {
+<span class="fc" id="L43">        Task task = taskService.getTaskById(taskId);</span>
+<span class="fc" id="L44">        return ResponseEntity.ok(task);</span>
+    }
+
+    @GetMapping(&quot;/project/{projectId}&quot;)
+    public ResponseEntity&lt;List&lt;Task&gt;&gt; getTasksByProject(@PathVariable(&quot;projectId&quot;) Long projectId) {
+<span class="fc" id="L49">        List&lt;Task&gt; tasks = taskService.getTasksByProjectId(projectId);</span>
+<span class="fc" id="L50">        return ResponseEntity.ok(tasks);</span>
+    }
+
+    @PutMapping(&quot;/{id}/assign&quot;)
+    public ResponseEntity&lt;Task&gt; assignTask(@PathVariable(&quot;id&quot;) Long taskId,
+                                           @RequestParam Long userId) {
+<span class="fc" id="L56">        Task updatedTask = taskService.assignTask(taskId, userId);</span>
+<span class="fc" id="L57">        return ResponseEntity.ok(updatedTask);</span>
+    }
+
+    @GetMapping(&quot;/{id}/history&quot;)
+    public ResponseEntity&lt;List&lt;TaskHistory&gt;&gt; getTaskHistory(@PathVariable(&quot;id&quot;) Long taskId) {
+<span class="fc" id="L62">        List&lt;TaskHistory&gt; historyList = taskService.getTaskHistory(taskId);</span>
+<span class="fc" id="L63">        return ResponseEntity.ok(historyList);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

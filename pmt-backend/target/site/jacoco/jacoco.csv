@@ -1,0 +1,23 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+pmt-backend,com.codesolutions.pmt_backend.service,TaskService,18,366,11,25,0,71,11,19,0,12
+pmt-backend,com.codesolutions.pmt_backend.service,InvitationService,0,144,0,2,0,30,0,9,0,8
+pmt-backend,com.codesolutions.pmt_backend.service,AuthService,0,17,0,0,0,5,0,3,0,3
+pmt-backend,com.codesolutions.pmt_backend.service,NotificationService,0,34,0,0,0,10,0,2,0,2
+pmt-backend,com.codesolutions.pmt_backend.service,ProjectService,0,94,0,0,0,22,0,8,0,8
+pmt-backend,com.codesolutions.pmt_backend.entity,ProjectMember,8,44,0,0,4,16,2,8,2,8
+pmt-backend,com.codesolutions.pmt_backend.entity,User,0,56,0,0,0,23,0,12,0,12
+pmt-backend,com.codesolutions.pmt_backend.entity,Invitation,0,63,0,0,0,27,0,14,0,14
+pmt-backend,com.codesolutions.pmt_backend.entity,Role,8,15,0,0,4,6,2,4,2,4
+pmt-backend,com.codesolutions.pmt_backend.entity,ProjectMemberId,27,42,4,4,5,13,7,5,3,5
+pmt-backend,com.codesolutions.pmt_backend.entity,Task,0,83,0,0,0,35,0,18,0,18
+pmt-backend,com.codesolutions.pmt_backend.entity,Project,0,43,0,0,0,18,0,10,0,10
+pmt-backend,com.codesolutions.pmt_backend.entity,TaskHistory,16,40,0,0,8,15,4,8,4,8
+pmt-backend,com.codesolutions.pmt_backend.controller,AuthController,0,34,0,0,0,8,0,4,0,4
+pmt-backend,com.codesolutions.pmt_backend.controller,ProjectController,23,20,0,0,6,5,3,2,3,2
+pmt-backend,com.codesolutions.pmt_backend.controller,TaskController,0,60,0,0,0,16,0,7,0,7
+pmt-backend,com.codesolutions.pmt_backend.controller,ProjectMemberController,0,99,0,0,0,20,0,7,0,7
+pmt-backend,com.codesolutions.pmt_backend.controller,InvitationController,8,19,0,0,2,5,1,2,1,2
+pmt-backend,com.codesolutions.pmt_backend,PmtBackendApplication,5,3,0,0,2,1,1,1,1,1
+pmt-backend,com.codesolutions.pmt_backend.config,BootStrapData,0,49,3,3,0,10,3,2,0,2
+pmt-backend,com.codesolutions.pmt_backend.config,CorsGlobalConfiguration,0,8,0,0,0,2,0,2,0,2
+pmt-backend,com.codesolutions.pmt_backend.config,CorsGlobalConfiguration.new WebMvcConfigurer() {...},0,48,0,0,0,6,0,2,0,2

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.service</a> &gt; <span class="el_source">ProjectService.java</span></div><h1>ProjectService.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.service;
+
+import com.codesolutions.pmt_backend.entity.*;
+import com.codesolutions.pmt_backend.repository.ProjectMemberRepository;
+import com.codesolutions.pmt_backend.repository.ProjectRepository;
+import com.codesolutions.pmt_backend.repository.RoleRepository;
+import com.codesolutions.pmt_backend.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ProjectService {
+
+    private final ProjectRepository projectRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
+
+    public ProjectService(ProjectRepository projectRepository, ProjectMemberRepository projectMemberRepository,
+<span class="fc" id="L22">                          RoleRepository roleRepository, UserRepository userRepository) {</span>
+<span class="fc" id="L23">        this.projectRepository = projectRepository;</span>
+<span class="fc" id="L24">        this.projectMemberRepository = projectMemberRepository;</span>
+<span class="fc" id="L25">        this.roleRepository = roleRepository;</span>
+<span class="fc" id="L26">        this.userRepository = userRepository;</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * Crée un nouveau projet et associe l'utilisateur créateur comme ADMIN
+     */
+    @Transactional
+    public Project createProject(Project project, Long creatorId) {
+        // Sauvegarde du projet
+<span class="fc" id="L35">        Project createdProject = projectRepository.save(project);</span>
+
+        // Récupère l'utilisateur par son ID
+<span class="fc" id="L38">        User creator = userRepository.findById(creatorId)</span>
+<span class="fc" id="L39">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Utilisateur non trouvé&quot;));</span>
+
+        // Récupère le rôle ADMIN
+<span class="fc" id="L42">        Role adminRole = roleRepository.findByName(&quot;ADMIN&quot;)</span>
+<span class="fc" id="L43">                .orElseThrow(() -&gt; new IllegalStateException(&quot;Rôle ADMIN introuvable&quot;));</span>
+
+        // Crée l'association ProjectMember et l'enregistre
+<span class="fc" id="L46">        ProjectMember projectMember = new ProjectMember(creator, createdProject, adminRole);</span>
+<span class="fc" id="L47">        projectMemberRepository.save(projectMember);</span>
+
+<span class="fc" id="L49">        return createdProject;</span>
+    }
+
+    /**
+     * Récupère la liste de tous les projets.
+     */
+    public List&lt;Project&gt; getAllProjects() {
+<span class="fc" id="L56">        return projectRepository.findAll();</span>
+    }
+
+    public Project getProjectById(Long id) {
+<span class="fc" id="L60">        return projectRepository.findById(id)</span>
+<span class="fc" id="L61">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Projet avec id &quot; + id + &quot; non trouvé&quot;));</span>
+    }
+
+
+    /**
+     * Récupère la liste des projets associés à un utilisateur (créés ou auxquels il est membre).
+     */
+    @Transactional(readOnly = true)
+    public List&lt;Project&gt; getProjectsByUser(Long userId) {
+<span class="fc" id="L70">        List&lt;ProjectMember&gt; memberships = projectMemberRepository.findByUserId(userId);</span>
+<span class="fc" id="L71">        return memberships.stream()</span>
+<span class="fc" id="L72">                .map(ProjectMember::getProject)</span>
+<span class="fc" id="L73">                .distinct()</span>
+<span class="fc" id="L74">                .collect(Collectors.toList());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

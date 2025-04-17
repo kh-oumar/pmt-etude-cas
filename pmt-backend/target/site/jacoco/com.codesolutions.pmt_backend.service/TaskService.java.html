@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pmt-backend</a> &gt; <a href="index.source.html" class="el_package">com.codesolutions.pmt_backend.service</a> &gt; <span class="el_source">TaskService.java</span></div><h1>TaskService.java</h1><pre class="source lang-java linenums">package com.codesolutions.pmt_backend.service;
+
+import com.codesolutions.pmt_backend.entity.Task;
+import com.codesolutions.pmt_backend.entity.TaskHistory;
+import com.codesolutions.pmt_backend.entity.User;
+import com.codesolutions.pmt_backend.entity.Project;
+import com.codesolutions.pmt_backend.repository.TaskHistoryRepository;
+import com.codesolutions.pmt_backend.repository.TaskRepository;
+import com.codesolutions.pmt_backend.repository.ProjectRepository;
+import com.codesolutions.pmt_backend.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.List;
+
+@Service
+public class TaskService {
+
+    private final TaskRepository taskRepository;
+    private final TaskHistoryRepository taskHistoryRepository;
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
+    private final NotificationService notificationService;
+
+    public TaskService(TaskRepository taskRepository, TaskHistoryRepository taskHistoryRepository,
+<span class="fc" id="L27">                       ProjectRepository projectRepository, UserRepository userRepository, NotificationService notificationService) {</span>
+<span class="fc" id="L28">        this.taskRepository = taskRepository;</span>
+<span class="fc" id="L29">        this.taskHistoryRepository = taskHistoryRepository;</span>
+<span class="fc" id="L30">        this.projectRepository = projectRepository;</span>
+<span class="fc" id="L31">        this.userRepository = userRepository;</span>
+<span class="fc" id="L32">        this.notificationService = notificationService;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Crée une nouvelle tâche pour un projet. Si l'assignation est réalisée, enregistre une entrée dans l'historique.
+     */
+    @Transactional
+    public Task createTask(Task task) {
+        // Vérification de l'existence du projet référencé par la tâche
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">        if (task.getProject() == null || task.getProject().getId() == null) {</span>
+<span class="fc" id="L42">            throw new IllegalArgumentException(&quot;La tâche doit référencer un projet existant&quot;);</span>
+        }
+
+<span class="fc" id="L45">        Long projectId = task.getProject().getId();</span>
+<span class="fc" id="L46">        Project project = projectRepository.findById(projectId)</span>
+<span class="fc" id="L47">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Projet avec id &quot; + projectId + &quot; n'existe pas&quot;));</span>
+
+        // Association du projet existant à la tâche
+<span class="fc" id="L50">        task.setProject(project);</span>
+
+        // Création de la tâche
+<span class="fc" id="L53">        Task savedTask = taskRepository.save(task);</span>
+
+        // Enregistrement d'une entrée dans l'historique
+<span class="fc" id="L56">        TaskHistory history = new TaskHistory(savedTask,</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                task.getAssignedTo() != null ? task.getAssignedTo() : null,</span>
+                &quot;Tâche créée&quot;);
+<span class="fc" id="L59">        taskHistoryRepository.save(history);</span>
+
+<span class="fc" id="L61">        return savedTask;</span>
+    }
+
+    /**
+     * Met à jour une tâche et enregistre l'historique des modifications.
+     */
+    @Transactional
+    public Task updateTask(Task task) {
+<span class="fc" id="L69">        Optional&lt;Task&gt; optionalTask = taskRepository.findById(task.getId());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (optionalTask.isEmpty()) {</span>
+<span class="fc" id="L71">            throw new IllegalArgumentException(&quot;La tâche n'existe pas&quot;);</span>
+        }
+<span class="fc" id="L73">        Task existingTask = optionalTask.get();</span>
+
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (!existingTask.getName().equals(task.getName())) {</span>
+<span class="fc" id="L76">            TaskHistory history = new TaskHistory(existingTask,</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                    task.getAssignedTo() != null ? task.getAssignedTo() : null,</span>
+<span class="fc" id="L78">                    &quot;Le nom a été changé de \&quot;&quot; + existingTask.getName() + &quot;\&quot; en \&quot;&quot; + task.getName() + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L79">            taskHistoryRepository.save(history);</span>
+        }
+
+        // Pour la description
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">        if (task.getDescription() != null &amp;&amp; !task.getDescription().equals(existingTask.getDescription())) {</span>
+<span class="fc" id="L84">            TaskHistory history = new TaskHistory(existingTask,</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                    task.getAssignedTo() != null ? task.getAssignedTo() : null,</span>
+<span class="fc" id="L86">                    &quot;La description a été changée de \&quot;&quot; + existingTask.getDescription() + &quot;\&quot; en \&quot;&quot; + task.getDescription() + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L87">            taskHistoryRepository.save(history);</span>
+        }
+
+        // Pour la date d'échéance
+<span class="pc bpc" id="L91" title="1 of 4 branches missed.">        if (task.getDueDate() != null &amp;&amp; !task.getDueDate().equals(existingTask.getDueDate())) {</span>
+<span class="fc" id="L92">            TaskHistory history = new TaskHistory(existingTask,</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">                    task.getAssignedTo() != null ? task.getAssignedTo() : null,</span>
+<span class="fc" id="L94">                    &quot;La date d'échéance a été modifiée de \&quot;&quot; + existingTask.getDueDate() + &quot;\&quot; en \&quot;&quot; + task.getDueDate() + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L95">            taskHistoryRepository.save(history);</span>
+        }
+
+        // Pour la priorité
+<span class="pc bpc" id="L99" title="1 of 4 branches missed.">        if (task.getPriority() != null &amp;&amp; !task.getPriority().equals(existingTask.getPriority())) {</span>
+<span class="fc" id="L100">            TaskHistory history = new TaskHistory(existingTask,</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">                    task.getAssignedTo() != null ? task.getAssignedTo() : null,</span>
+<span class="fc" id="L102">                    &quot;La priorité a été changée de \&quot;&quot; + existingTask.getPriority() + &quot;\&quot; en \&quot;&quot; + task.getPriority() + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L103">            taskHistoryRepository.save(history);</span>
+        }
+
+        // Pour le statut
+<span class="pc bpc" id="L107" title="1 of 4 branches missed.">        if (task.getStatus() != null &amp;&amp; !task.getStatus().equals(existingTask.getStatus())) {</span>
+<span class="fc" id="L108">            TaskHistory history = new TaskHistory(existingTask,</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                    task.getAssignedTo() != null ? task.getAssignedTo() : null,</span>
+<span class="fc" id="L110">                    &quot;Le statut a été changé de \&quot;&quot; + existingTask.getStatus() + &quot;\&quot; à \&quot;&quot; + task.getStatus() + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L111">            taskHistoryRepository.save(history);</span>
+        }
+
+        // Mise à jour de l'objet existant
+<span class="fc" id="L115">        existingTask.setName(task.getName());</span>
+<span class="fc" id="L116">        existingTask.setDescription(task.getDescription());</span>
+<span class="fc" id="L117">        existingTask.setDueDate(task.getDueDate());</span>
+<span class="fc" id="L118">        existingTask.setPriority(task.getPriority());</span>
+<span class="fc" id="L119">        existingTask.setStatus(task.getStatus());</span>
+<span class="fc" id="L120">        existingTask.setAssignedTo(task.getAssignedTo());</span>
+
+<span class="fc" id="L122">        return taskRepository.save(existingTask);</span>
+    }
+
+    /**
+     * Récupère une tâche par son identifiant.
+     */
+    public Task getTaskById(Long taskId) {
+<span class="fc" id="L129">        return taskRepository.findById(taskId)</span>
+<span class="fc" id="L130">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;La tâche avec l'id &quot; + taskId + &quot; n'existe pas&quot;));</span>
+    }
+
+    /**
+     * Récupère la liste des tâches pour un projet donné.
+     */
+    public List&lt;Task&gt; getTasksByProjectId(Long projectId) {
+        // Si ton repository dispose d'une méthode findByProject(Project project) ou similaire :
+<span class="fc" id="L138">        Project project = projectRepository.findById(projectId)</span>
+<span class="fc" id="L139">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Projet avec id &quot; + projectId + &quot; non trouvé&quot;));</span>
+<span class="fc" id="L140">        return taskRepository.findByProject(project);</span>
+    }
+
+    @Transactional
+    public Task assignTask(Long taskId, Long userId) {
+        // Récupérer la tâche
+<span class="fc" id="L146">        Task task = taskRepository.findById(taskId)</span>
+<span class="fc" id="L147">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;La tâche avec l'id &quot; + taskId + &quot; n'existe pas&quot;));</span>
+
+        // Récupérer l'utilisateur qui va être assigné
+<span class="fc" id="L150">        User user = userRepository.findById(userId)</span>
+<span class="fc" id="L151">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Utilisateur avec id &quot; + userId + &quot; non trouvé&quot;));</span>
+
+        // Mettre à jour le champ assignedTo
+<span class="fc" id="L154">        task.setAssignedTo(user);</span>
+
+        // Enregistrer un historique de cette assignation
+<span class="fc" id="L157">        TaskHistory history = new TaskHistory(task, user, &quot;Tâche assignée à &quot; + user.getUsername());</span>
+<span class="fc" id="L158">        taskHistoryRepository.save(history);</span>
+
+        // Sauvegarder la tâche et envoyer la notification
+<span class="fc" id="L161">        Task updatedTask = taskRepository.save(task);</span>
+<span class="fc" id="L162">        notificationService.sendAssignmentNotification(user, updatedTask);</span>
+
+<span class="fc" id="L164">        return updatedTask;</span>
+    }
+
+    public List&lt;TaskHistory&gt; getTaskHistory(Long taskId) {
+<span class="fc" id="L168">        Task task = getTaskById(taskId);</span>
+<span class="fc" id="L169">        return taskHistoryRepository.findByTaskOrderByChangeDateDesc(task);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
