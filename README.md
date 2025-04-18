@@ -1,6 +1,6 @@
 # Project Management Tool (PMT)
 
-Ce projet est une application de gestion de projets collaboratifs. Il s'adresse aux équipes de développement logiciel et propose les fonctionnalités suivantes :
+Ce projet est une application de gestion de projets collaboratifs :
 
 - **Authentification** : Inscription et connexion des utilisateurs.  
 - **Gestion des Projets** : Création de projets, gestion des membres et attribution de rôles (ADMIN, MEMBER, OBSERVER).  
@@ -28,7 +28,7 @@ Ce projet est une application de gestion de projets collaboratifs. Il s'adresse 
 
 ### Prérequis
 
-- **Java** : Version 21 (ou plus récente)  
+- **Java** : Version 17 (ou plus récente)  
 - **Node.js et npm** : Version Node 22 et npm 10  
 - **Angular CLI** : Version 18  
 - **Maven**  
@@ -45,18 +45,22 @@ Ce projet est une application de gestion de projets collaboratifs. Il s'adresse 
    ```sh
    mvn clean package
    ```
+  et pour voir le rapport de couverture des tests coté backend faire :
+   ```sh
+   mvn clean verify
+   ```
+  puis ouvrir sur le web le ficher qui se trouve dans : pmt-etude-cas/pmt-backend/target/site/jacoco/index.html
 
 3. **Configurer le frontend**  
    Placez-vous dans le dossier `pmt-frontend` et installez les dépendances npm :
    ```sh
    npm install
    ```
-
-   Pour vérifier que l'application Angular fonctionne en mode développement, vous pouvez lancer :
+   et pour voir le rapport de couverture des tests coté frontend :
    ```sh
-   ng serve
+    npm run test:coverage
    ```
-   L'application sera accessible sur [http://localhost:4200](http://localhost:4200).
+  le rapport sera visible dans la console.
 
 ---
 
@@ -145,32 +149,6 @@ docker-compose up --build
 Cela va construire et lancer les conteneurs pour le frontend et le backend.  
 L'application frontend sera accessible sur [http://localhost:4200](http://localhost:4200) et le backend sur [http://localhost:8080](http://localhost:8080).
 
----
-
-## Exécution des Tests
-
-### Tests Backend
-
-Pour exécuter les tests backend avec Maven, utilisez la commande suivante dans le dossier du backend (contenant le `pom.xml`) :
-```sh
-mvn clean test
-```
-Les tests unitaires et d’intégration réalisés avec Spring Boot Test, JUnit et Mockito s’exécuteront et vous fourniront un rapport de couverture.
-
-### Tests Frontend
-
-Les tests frontend sont réalisés avec Jest. Pour lancer les tests, utilisez la commande :
-```sh
-npm run test
-```
-Vous pouvez aussi lancer :
-```sh
-npm run test -- --watch
-```
-pour que les tests se relancent à chaque modification.  
-Vérifiez que la configuration Jest (fichier `jest.config.js` et `setup-jest.ts`) est correctement configurée pour Angular.
-
----
 
 ## Pipeline CI/CD avec GitHub Actions
 
